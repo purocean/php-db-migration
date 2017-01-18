@@ -1,0 +1,22 @@
+{
+    "name": "purocean/php-db-migration",
+    "type": "library",
+    "description": "A database migration tool",
+    "keywords": ["db", "migration", "database", "mysql", "数据库", "迁移"],
+    "homepage": "https://github.com/purocean/php-db-migration",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/purocean/php-db-migration/issues",
+        "source": "https://github.com/purocean/php-db-migration"
+    },
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "DbMigration\\": "src/"
+        }
+    }
+}
