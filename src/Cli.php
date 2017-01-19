@@ -46,14 +46,6 @@ class Cli
                     }
                     break;
 
-                case 'redo':
-                    if (isset($argv[2])) {
-                        echo $this->_migration->redo($argv[2]);
-                    } else {
-                        echo $this->help();
-                    }
-                    break;
-
                 case 'new':
                     echo $this->_migration->new();
                     break;
@@ -76,6 +68,8 @@ class Cli
         return <<<HELP
 USAGE
     php {$_SERVER['PHP_SELF']} create <name> [...options...]
+    php {$_SERVER['PHP_SELF']} up [1-n]
+    php {$_SERVER['PHP_SELF']} down <name> [1-n]
     php {$_SERVER['PHP_SELF']} history
     php {$_SERVER['PHP_SELF']} new
     php {$_SERVER['PHP_SELF']} mark <version> [--applied=0]

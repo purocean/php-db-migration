@@ -64,15 +64,15 @@ class Migrate
     public function up($limit = null)
     {
         $migrations = array_slice($this->_getNew(), 0, $limit);
-        // if (!$this->_confirm(
-        //     "Total ".count($migrations)." new migration to be applied:\n    "
-        //     .implode("\n    ", array_map(function ($migration) {
-        //         return basename($migration);
-        //     }, $migrations))
-        //     ."\nApply the above migration?"
-        // )) {
-        //     return "No effect";
-        // }
+        if (!$this->_confirm(
+            "Total ".count($migrations)." new migration to be applied:\n    "
+            .implode("\n    ", array_map(function ($migration) {
+                return basename($migration);
+            }, $migrations))
+            ."\nApply the above migration?"
+        )) {
+            return "No effect";
+        }
 
         $log = '';
         foreach ($migrations as $migration) {
@@ -117,11 +117,6 @@ class Migrate
         }
 
         return "Mark {$name} to ".($applied ? 'applied' : 'down').' '.($result ? 'success' : 'failed');
-    }
-
-    public function redo($name)
-    {
-        return 'Not implement';
     }
 
     public function new()

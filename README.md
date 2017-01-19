@@ -20,7 +20,7 @@ $migrationConfig = [
 ```
 
 ```bash
-php migration.php create create_user_table
+php migration.php help
 ```
 
 ## 功能
