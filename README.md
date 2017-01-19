@@ -58,7 +58,6 @@ php test.php
 - [ ] addCommentOnTable
 - [ ] dropCommentFromColumn
 - [ ] dropCommentFromTable
-
 - [ ] primaryKey
 - [ ] bigPrimaryKey
 - [ ] char
@@ -77,7 +76,6 @@ php test.php
 - [ ] binary
 - [ ] boolean
 - [ ] money
-
 - [ ] notNull
 - [ ] null
 - [ ] unique
@@ -89,4 +87,3 @@ php test.php
 - [ ] first
 - [ ] defaultExpression
 - [ ] append
-
