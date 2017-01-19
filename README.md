@@ -37,7 +37,7 @@ cd test
 php test.php
 ```
 
-## Mysql
+## MySQL
 - [x] execute
 - [ ] createTable
 - [ ] renameTable
