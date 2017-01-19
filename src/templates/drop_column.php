@@ -1,6 +1,6 @@
 <?= '<?php' ?>
 
-use yii\db\Migration;
+use DbMigration\Migration;
 
 /**
  * Handles droping column(s) from table `<?= $table ?>`.
@@ -20,6 +20,6 @@ class <?= $className ?> extends Migration
      */
     public function down()
     {
-        // Add column;
+        return false; // 此迁移不能被回滚
     }
 }

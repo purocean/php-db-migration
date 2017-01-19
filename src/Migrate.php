@@ -63,7 +63,37 @@ class Migrate
 
     public function up($limit = null)
     {
-        return 'Not implement';
+        $migrations = array_slice($this->_getNew(), 0, $limit);
+        // if (!$this->_confirm(
+        //     "Total ".count($migrations)." new migration to be applied:\n    "
+        //     .implode("\n    ", array_map(function ($migration) {
+        //         return basename($migration);
+        //     }, $migrations))
+        //     ."\nApply the above migration?"
+        // )) {
+        //     return "No effect";
+        // }
+
+        $log = '';
+        foreach ($migrations as $migration) {
+            try {
+                require $migration;
+                $name = '\\'.substr(basename($migration), 0, -4);
+                $instance = new $name([
+                    'db' => $this->_db,
+                ]);
+                if ($instance->up() and $instance->do()) {
+                    $log .= $instance->log;
+                    $this->_toUp($name);
+                } else {
+                    return $instance->log;
+                }
+            } catch (\Exception $e) {
+                throw $e;
+            }
+        }
+
+        return $log;
     }
 
     public function down($limit = 1)
@@ -114,7 +144,7 @@ class Migrate
         return $history;
     }
 
-    public function getName($name)
+    public static function getQuoted($name)
     {
         return str_replace(
             ['{{%', '{{', '}}', '[[', ']]'],
@@ -130,7 +160,7 @@ class Migrate
 
     private function _init()
     {
-        $migrationTable = $this->getName($this->migrationTable);
+        $migrationTable = self::getQuoted($this->migrationTable);
 
         $this->_db->exec("CREATE TABLE IF NOT EXISTS {$migrationTable} (
           `name` varchar(180) NOT NULL,
@@ -143,7 +173,7 @@ class Migrate
 
     private function _toUp($name)
     {
-        $migrationTable = $this->getName($this->migrationTable);
+        $migrationTable = self::getQuoted($this->migrationTable);
         try {
             return $this->_db->exec(
                 "INSERT INTO {$migrationTable} set `name` = ?, `apply_time` = ?",
@@ -158,7 +188,7 @@ class Migrate
 
     private function _toDown($name)
     {
-        $migrationTable = $this->getName($this->migrationTable);
+        $migrationTable = self::getQuoted($this->migrationTable);
         try {
             return $this->_db->exec(
                 "DELETE FROM {$migrationTable} WHERE `name` = ?",
@@ -173,7 +203,7 @@ class Migrate
 
     private function _getHistory()
     {
-        $migrationTable = $this->getName($this->migrationTable);
+        $migrationTable = self::getQuoted($this->migrationTable);
         return $this->_db->fetchAll("SELECT * FROM {$migrationTable} WHERE 1 ORDER BY `apply_time` ASC");
     }
 

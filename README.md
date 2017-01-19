@@ -37,3 +37,56 @@ php migration.php create create_user_table
 cd test
 php test.php
 ```
+
+## Mysql
+- [x] execute
+- [ ] createTable
+- [ ] renameTable
+- [ ] dropTable
+- [ ] truncateTable
+- [ ] addColumn
+- [ ] dropColumn
+- [ ] renameColumn
+- [ ] alterColumn
+- [ ] addPrimaryKey
+- [ ] dropPrimaryKey
+- [ ] addForeignKey
+- [ ] dropForeignKey
+- [ ] createIndex
+- [ ] dropIndex
+- [ ] addCommentOnColumn
+- [ ] addCommentOnTable
+- [ ] dropCommentFromColumn
+- [ ] dropCommentFromTable
+
+- [ ] primaryKey
+- [ ] bigPrimaryKey
+- [ ] char
+- [ ] string
+- [ ] text
+- [ ] smallInteger
+- [ ] integer
+- [ ] bigInteger
+- [ ] float
+- [ ] double
+- [ ] decimal
+- [ ] dateTime
+- [ ] timestamp
+- [ ] time
+- [ ] date
+- [ ] binary
+- [ ] boolean
+- [ ] money
+
+- [ ] notNull
+- [ ] null
+- [ ] unique
+- [ ] check
+- [ ] defaultValue
+- [ ] comment
+- [ ] unsigned
+- [ ] after
+- [ ] first
+- [ ] defaultExpression
+- [ ] append
+

@@ -1,6 +1,6 @@
 <?= '<?php' ?>
 
-use yii\db\Migration;
+use DbMigration\Migration;
 
 /**
  * Handles the droping of table `<?= $table ?>`.
@@ -20,6 +20,6 @@ class <?= $className ?> extends Migration
      */
     public function down()
     {
-        // Create Table;
+        return false; // 此迁移不能被回滚
     }
 }

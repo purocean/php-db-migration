@@ -1,6 +1,6 @@
 <?= '<?php' ?>
 
-use yii\db\Migration;
+use DbMigration\Migration;
 
 /**
  * Handles adding column(s) to table `<?= $table ?>`.
@@ -17,6 +17,8 @@ class <?= $className ?> extends Migration
             '__COLUMN_NAME__',
             $this->string()->after('__AFTER__')->notNull()->defaultValue('')->comment('comment')
         );
+
+        return true;
     }
 
     /**
@@ -25,5 +27,7 @@ class <?= $className ?> extends Migration
     public function down()
     {
         $this->dropColumn('<?= $table ?>', '__COLUMN_NAME__');
+
+        return true;
     }
 }

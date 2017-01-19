@@ -12,6 +12,8 @@ class Db
         'dsn' => '',
     ];
 
+    public $driverName = null;
+
     public $pdo = null;
 
     public function __construct($config)
@@ -24,6 +26,7 @@ class Db
                 $this->_config['username'],
                 $this->_config['password']
             );
+            $this->driverName = explode(':', $this->_config['dsn'], 2)[0];
         } catch (\PDOException $e) {
             throw $e;
         }

@@ -1,6 +1,6 @@
 <?= '<?php' ?>
 
-use yii\db\Migration;
+use DbMigration\Migration;
 
 class <?= $className ?> extends Migration
 {
@@ -9,7 +9,7 @@ class <?= $className ?> extends Migration
      */
     public function up()
     {
-
+        return true;
     }
 
     /**
@@ -17,6 +17,6 @@ class <?= $className ?> extends Migration
      */
     public function down()
     {
-
+        return false; // 此迁移不能被回滚
     }
 }

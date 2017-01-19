@@ -1,5 +1,6 @@
 <?php
 require '../src/Migrate.php';
+require '../src/Migration.php';
 require '../src/Db.php';
 require '../src/Cli.php';
 
