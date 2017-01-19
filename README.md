@@ -30,3 +30,9 @@ php migration.php create create_user_table
 - [ ] redo     重做最近迁移
 - [ ] new      显示未升级迁移
 - [ ] history  查看迁移历史
+
+## 测试
+```bash
+cd test
+php test.php
+```
