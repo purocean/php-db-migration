@@ -28,7 +28,7 @@ php migration.php create create_user_table
 - [ ] down     降级一个迁移
 - [ ] mark     讲某个迁移标记为已升级/未升级
 - [ ] redo     重做最近迁移
-- [ ] new      显示未升级迁移
+- [x] new      显示未升级迁移
 - [x] history  查看迁移历史
 
 ## 测试

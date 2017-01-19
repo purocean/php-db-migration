@@ -83,15 +83,18 @@ class Migrate
 
     public function new()
     {
-        return 'Not implement';
+        $new = "\nShowing the new migrations:";
+        foreach ($this->_getNew() as $file) {
+            $new .= "\n    ".basename($file);
+        }
+
+        return $new;
     }
 
     public function history()
     {
-        $migrationTable = $this->getName($this->migrationTable);
-
         $history = "\nShowing the applied migrations:";
-        foreach ($this->_db->fetchAll("SELECT * FROM {$migrationTable} WHERE 1") as $row) {
+        foreach ($this->_getHistory() as $row) {
             $history .= "\n    [".date('Y-m-d H:i:s', $row['apply_time']).'] '.$row['version'];
         }
 
@@ -127,6 +130,21 @@ class Migrate
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    private function _getHistory()
+    {
+        $migrationTable = $this->getName($this->migrationTable);
+        return $this->_db->fetchAll("SELECT * FROM {$migrationTable} WHERE 1");
+    }
+
+    private function _getNew()
+    {
+        $history = array_column($this->_getHistory(), 'version');
+        $migrations = glob($this->migrationsPath.'/*');
+        return array_filter($migrations, function ($migration) use ($history) {
+            return !in_array(substr(basename($migration), 0, -4), $history);
+        });
     }
 
     private function _renderTemplate($file, $params)
