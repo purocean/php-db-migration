@@ -75,6 +75,8 @@ class Cli
         return <<<HELP
 USAGE
     php {$_SERVER['PHP_SELF']} create <name> [...options...]
+    php {$_SERVER['PHP_SELF']} history
+    php {$_SERVER['PHP_SELF']} new
 
 OPTIONS
     --interactive: boolean, 0 or 1 (defaults to 1)
