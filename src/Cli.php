@@ -39,7 +39,8 @@ class Cli
 
                 case 'mark':
                     if (isset($argv[2])) {
-                        echo $this->_migration->mark($argv[2]);
+                        $applied = !(isset($argv[3]) and $argv[3] === '--applied=0');
+                        echo $this->_migration->mark($argv[2], $applied);
                     } else {
                         echo $this->help();
                     }
@@ -77,6 +78,7 @@ USAGE
     php {$_SERVER['PHP_SELF']} create <name> [...options...]
     php {$_SERVER['PHP_SELF']} history
     php {$_SERVER['PHP_SELF']} new
+    php {$_SERVER['PHP_SELF']} mark <version> [--applied=0]
 
 OPTIONS
     --interactive: boolean, 0 or 1 (defaults to 1)

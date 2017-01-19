@@ -3,6 +3,7 @@ require '../src/Migrate.php';
 require '../src/Db.php';
 require '../src/Cli.php';
 
+date_default_timezone_set('PRC');
 
 $migrationConfig = [
     'tablePrefix' => 'test_prefix_', // 表前缀

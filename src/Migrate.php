@@ -71,9 +71,22 @@ class Migrate
         return 'Not implement';
     }
 
-    public function mark($name, $done = true)
+    public function mark($name, $applied = true)
     {
-        return 'Not implement';
+        if (!$this->_migrationExists($name)) {
+            return "Migration '{$name}' not exists";
+        }
+
+        $result = false;
+        if ($applied) {
+            $this->_confirm("Mark migration '{$name}' to applied ?")
+                and $result = $this->_toUp($name);
+        } else {
+            $this->_confirm("Mark migration '{$name}' to down ?")
+                and $result = $this->_toDown($name);
+        }
+
+        return "Mark {$name} to ".($applied ? 'applied' : 'down').' '.($result ? 'success' : 'failed');
     }
 
     public function redo($name)
@@ -95,7 +108,7 @@ class Migrate
     {
         $history = "\nShowing the applied migrations:";
         foreach ($this->_getHistory() as $row) {
-            $history .= "\n    [".date('Y-m-d H:i:s', $row['apply_time']).'] '.$row['version'];
+            $history .= "\n    [".date('Y-m-d H:i:s', $row['apply_time']).'] '.$row['name'];
         }
 
         return $history;
@@ -110,23 +123,49 @@ class Migrate
         );
     }
 
+    private function _migrationExists($name)
+    {
+        return file_exists("{$this->migrationsPath}/{$name}.php");
+    }
+
     private function _init()
     {
         $migrationTable = $this->getName($this->migrationTable);
 
         $this->_db->exec("CREATE TABLE IF NOT EXISTS {$migrationTable} (
-          `version` varchar(180) NOT NULL,
+          `name` varchar(180) NOT NULL,
           `apply_time` int(11) DEFAULT NULL,
-          PRIMARY KEY (`version`)
+          PRIMARY KEY (`name`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
+        $this->_toUp(self::BASE_MIGRATION);
+    }
+
+    private function _toUp($name)
+    {
+        $migrationTable = $this->getName($this->migrationTable);
         try {
-            $this->_db->exec(
-                "INSERT INTO {$migrationTable} set `version` = ?, `apply_time` = ?",
-                [self::BASE_MIGRATION, time()]
+            return $this->_db->exec(
+                "INSERT INTO {$migrationTable} set `name` = ?, `apply_time` = ?",
+                [$name, time()]
             );
         } catch (\PDOException $e) {
-            // do nothing
+            return false;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    private function _toDown($name)
+    {
+        $migrationTable = $this->getName($this->migrationTable);
+        try {
+            return $this->_db->exec(
+                "DELETE FROM {$migrationTable} WHERE `name` = ?",
+                [$name]
+            );
+        } catch (\PDOException $e) {
+            return false;
         } catch (\Exception $e) {
             throw $e;
         }
@@ -135,16 +174,22 @@ class Migrate
     private function _getHistory()
     {
         $migrationTable = $this->getName($this->migrationTable);
-        return $this->_db->fetchAll("SELECT * FROM {$migrationTable} WHERE 1");
+        return $this->_db->fetchAll("SELECT * FROM {$migrationTable} WHERE 1 ORDER BY `apply_time` ASC");
     }
 
     private function _getNew()
     {
-        $history = array_column($this->_getHistory(), 'version');
+        $history = array_column($this->_getHistory(), 'name');
         $migrations = glob($this->migrationsPath.'/*');
-        return array_filter($migrations, function ($migration) use ($history) {
+        $new = array_filter($migrations, function ($migration) use ($history) {
             return !in_array(substr(basename($migration), 0, -4), $history);
         });
+
+        usort($new, function ($migrationA, $migrationB) {
+            return strnatcasecmp(basename($migrationA), basename(basename($migrationB)));
+        });
+
+        return array_slice($new, array_search());
     }
 
     private function _renderTemplate($file, $params)
