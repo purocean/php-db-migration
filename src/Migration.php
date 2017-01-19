@@ -8,11 +8,11 @@ class Migration
 {
     public function up()
     {
-        # code...
+        return true;
     }
 
     public function down()
     {
-        # code...
+        return true;
     }
 }

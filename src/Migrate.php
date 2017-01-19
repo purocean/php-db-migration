@@ -8,7 +8,7 @@ class Migrate
 {
     const BASE_MIGRATION = 'm000000_000000_base';
 
-    public $migrationTable = '{{%migration}}';
+    public $migrationTable = '{{%migrations}}';
 
     public $templateFiles = [
         'create_table' => __DIR__.'/templates/create_table.php',
@@ -46,6 +46,7 @@ class Migrate
         }
 
         $this->_db = new Db($this->dbConfig);
+        $this->_init();
     }
 
     public function create($name)
@@ -87,7 +88,45 @@ class Migrate
 
     public function history()
     {
-        return 'Not implement';
+        $migrationTable = $this->getName($this->migrationTable);
+
+        $history = "\nShowing the applied migrations:";
+        foreach ($this->_db->fetchAll("SELECT * FROM {$migrationTable} WHERE 1") as $row) {
+            $history .= "\n    [".date('Y-m-d H:i:s', $row['apply_time']).'] '.$row['version'];
+        }
+
+        return $history;
+    }
+
+    public function getName($name)
+    {
+        return str_replace(
+            ['{{%', '{{', '}}', '[[', ']]'],
+            ['`'.$this->tablePrefix, '`', '`', '`', '`'],
+            $name
+        );
+    }
+
+    private function _init()
+    {
+        $migrationTable = $this->getName($this->migrationTable);
+
+        $this->_db->exec("CREATE TABLE IF NOT EXISTS {$migrationTable} (
+          `version` varchar(180) NOT NULL,
+          `apply_time` int(11) DEFAULT NULL,
+          PRIMARY KEY (`version`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+        try {
+            $this->_db->exec(
+                "INSERT INTO {$migrationTable} set `version` = ?, `apply_time` = ?",
+                [self::BASE_MIGRATION, time()]
+            );
+        } catch (\PDOException $e) {
+            // do nothing
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     private function _renderTemplate($file, $params)
