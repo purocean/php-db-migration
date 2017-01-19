@@ -33,7 +33,7 @@ class Cli
                     break;
 
                 case 'down':
-                    $limit = isset($argv[2]) ? (int) $argv[2] : null;
+                    $limit = isset($argv[2]) ? (int) $argv[2] : 1;
                     echo $this->_migration->down($limit);
                     break;
 

@@ -66,7 +66,7 @@ class Migrate
         return 'Not implement';
     }
 
-    public function down($limit = null)
+    public function down($limit = 1)
     {
         return 'Not implement';
     }
@@ -189,7 +189,7 @@ class Migrate
             return strnatcasecmp(basename($migrationA), basename(basename($migrationB)));
         });
 
-        return array_slice($new, array_search());
+        return $new;
     }
 
     private function _renderTemplate($file, $params)
