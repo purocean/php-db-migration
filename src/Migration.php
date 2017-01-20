@@ -146,12 +146,7 @@ class Migration
 
         echo "\n> add primary key on $table (" . (is_array($columns) ? implode(',', $columns) : $columns) . ') ...';
         $time = microtime(true);
-        $columns = '('.implode(',', array_map(
-            function ($column) {
-                return Db::getQuoted('[['.trim($column).']]');
-            },
-            is_array($columns) ? $columns : explode(',', trim(trim(trim($columns), '('), ')'))
-        )).')';
+        $columns = $this->_buildColums($columns);
 
         $this->execute("ALTER TABLE {$table} ADD CONSTRAINT PRIMARY KEY {$columns}");
         echo '< done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
@@ -169,15 +164,29 @@ class Migration
 
     public function addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete = null, $update = null)
     {
-        echo "\n> add foreign key $name: $table (" . implode(',', (array) $columns) . ") references $refTable (" . implode(',', (array) $refColumns) . ') ...';
+        $table = Db::getQuoted($table, $this->tablePrefix);
+        $name = Db::getQuoted("[[{$name}]]");
+        $columns = $this->_buildColums($columns);
+        $refTable = Db::getQuoted($refTable, $this->tablePrefix);
+        $refColumns = $this->_buildColums($refColumns);
+
+        echo "\n> add foreign key $name: $table $columns references $refTable $refColumns ...";
         $time = microtime(true);
+        $sql = "ALTER TABLE {$table} ADD CONSTRAINT {$name} FOREIGN KEY {$columns} REFERENCES {$refTable} {$refColumns}"
+                .(is_null($delete) ? '' : ' ON DELETE '.$delete)
+                .(is_null($update) ? '' : ' ON UPDATE '.$update);
+
+        $this->execute($sql);
         echo '< done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
     public function dropForeignKey($name, $table)
     {
+        $table = Db::getQuoted($table, $this->tablePrefix);
+        $name = Db::getQuoted("[[{$name}]]");
         echo "\n> drop foreign key $name from table $table ...\n";
         $time = microtime(true);
+        $this->execute("ALTER TABLE {$table} DROP FOREIGN KEY {$name}");
         echo '< done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
@@ -185,13 +194,7 @@ class Migration
     {
         $table = Db::getQuoted($table, $this->tablePrefix);
         $name = Db::getQuoted("[[{$name}]]");
-
-        $columns = '('.implode(',', array_map(
-            function ($column) {
-                return Db::getQuoted('[['.trim($column).']]');
-            },
-            is_array($columns) ? $columns : explode(',', trim(trim(trim($columns), '('), ')'))
-        )).')';
+        $columns = $this->_buildColums($columns);
 
         echo '    > create' . ($unique ? ' unique' : '') . " index $name on $table $columns ...";
         $time = microtime(true);
@@ -272,5 +275,15 @@ class Migration
         }
 
         return null;
+    }
+
+    private function _buildColums($columns)
+    {
+        return '('.implode(',', array_map(
+            function ($column) {
+                return Db::getQuoted('[['.trim($column).']]');
+            },
+            is_array($columns) ? $columns : explode(',', trim(trim(trim($columns), '('), ')'))
+        )).')';
     }
 }

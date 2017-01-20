@@ -1,5 +1,6 @@
 <?php
 use DbMigration\Migration;
+use DbMigration\Migrate;
 
 class m170119_101310_test_migration extends Migration
 {
@@ -24,6 +25,7 @@ class m170119_101310_test_migration extends Migration
             'string2'   => $this->string()->defaultValue('hello2'),
             'text'      => $this->text(),
             'smallint'  => $this->smallInteger()->notNull()->null(),
+            'fk'        => $this->integer(),
             'int'       => $this->integer(18),
             'integer'   => $this->integer()->unsigned(),
             'float'     => $this->float(),
@@ -71,6 +73,10 @@ class m170119_101310_test_migration extends Migration
 
         $this->addCommentOnTable('{{%new_test}}', "二进制';drop datase --- ");
         $this->dropCommentFromTable('{{%new_test}}');
+
+        $this->addColumn('{{%migrations}}', 'fkkkk', $this->integer()->unique());
+        $this->addForeignKey('testfk', '{{%new_test}}', 'fk', '{{%migrations}}', ['fkkkk'], null, 'CASCADE');
+        $this->dropForeignKey('testfk', '{{%new_test}}');
 
         return true;
     }

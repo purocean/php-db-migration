@@ -50,8 +50,8 @@ php test.php
 - [x] alterColumn
 - [x] addPrimaryKey
 - [x] dropPrimaryKey
-- [ ] addForeignKey
-- [ ] dropForeignKey
+- [x] addForeignKey
+- [x] dropForeignKey
 - [x] createIndex
 - [x] dropIndex
 - [x] addCommentOnColumn()
