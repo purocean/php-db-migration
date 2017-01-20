@@ -54,10 +54,10 @@ php test.php
 - [ ] dropForeignKey
 - [x] createIndex
 - [x] dropIndex
-- [ ] addCommentOnColumn()
-- [ ] addCommentOnTable
-- [ ] dropCommentFromColumn
-- [ ] dropCommentFromTable
+- [x] addCommentOnColumn()
+- [x] addCommentOnTable
+- [x] dropCommentFromColumn
+- [x] dropCommentFromTable
 - [x] primaryKey
 - [x] char
 - [x] varchar

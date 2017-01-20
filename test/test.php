@@ -57,4 +57,6 @@ function expectTrue($flag, $name)
     return "\n".($flag ? '√' : '×').' '.$name;
 }
 
+var_dump($db->fetch('show create table '.\DbMigration\Db::getQuoted('{{%new_test}}', $config['tablePrefix'])));
+
 echo $log;

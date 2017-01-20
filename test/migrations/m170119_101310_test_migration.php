@@ -66,6 +66,12 @@ class m170119_101310_test_migration extends Migration
         $this->dropPrimaryKey('{{%new_test}}');
         $this->addPrimaryKey('{{%new_test}}', 'varchar, int');
 
+        $this->addCommentOnColumn('{{%new_test}}', 'binary', "二进制';drop da --- ");
+        $this->dropCommentFromColumn('{{%new_test}}', 'binary');
+
+        $this->addCommentOnTable('{{%new_test}}', "二进制';drop datase --- ");
+        $this->dropCommentFromTable('{{%new_test}}');
+
         return true;
     }
 

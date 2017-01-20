@@ -78,6 +78,6 @@ class Db
 
     public static function addcslashes($str)
     {
-        return addcslashes($str, "\000\n\r\\\032");
+        return addcslashes($str, "\000\n\r\\\032'");
     }
 }
