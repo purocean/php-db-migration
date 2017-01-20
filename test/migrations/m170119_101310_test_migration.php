@@ -44,6 +44,10 @@ class m170119_101310_test_migration extends Migration
 
         $this->renameTable('{{%test}}', '{{%new_test}}');
 
+        $this->execute('INSERT INTO {{%new_test}} set `char` = ?', ['asdfgh']);
+
+        $this->truncateTable('{{%new_test}}');
+
         return true;
     }
 
@@ -52,7 +56,7 @@ class m170119_101310_test_migration extends Migration
      */
     public function down()
     {
-        $this->dropTable('{{%test}}');
+        $this->dropTable('{{%new_test}}');
 
         return true;
     }

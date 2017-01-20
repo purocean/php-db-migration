@@ -15,7 +15,7 @@ class <?= $className ?> extends Migration
         $this->addColumn(
             '<?= $table ?>',
             '__COLUMN_NAME__',
-            $this->string()->after('__AFTER__')->notNull()->defaultValue('')->comment('comment')
+            $this->string()->after('id')->notNull()->defaultValue('')->comment('comment')
         );
 
         return true;

@@ -43,7 +43,7 @@ php test.php
 - [x] createTable
 - [x] renameTable
 - [x] dropTable
-- [ ] truncateTable
+- [x] truncateTable
 - [ ] addColumn
 - [ ] dropColumn
 - [ ] renameColumn

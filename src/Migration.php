@@ -84,6 +84,7 @@ class Migration
     {
         echo "    > truncate table $table ...";
         $time = microtime(true);
+        $this->execute("TRUNCATE TABLE ".Db::getQuoted($table, $this->tablePrefix));
         echo ' done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
