@@ -66,4 +66,18 @@ class Db
 
         return $error;
     }
+
+    public static function getQuoted($sql, $tablePrefix = '')
+    {
+        return str_replace(
+            ['{{%', '{{', '}}', '[[', ']]'],
+            ['`'.$tablePrefix, '`', '`', '`', '`'],
+            $sql
+        );
+    }
+
+    public static function addcslashes($str)
+    {
+        return addcslashes($str, "\000\n\r\\\032");
+    }
 }

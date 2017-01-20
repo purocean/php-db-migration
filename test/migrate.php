@@ -1,4 +1,6 @@
 <?php
+require '../src/Column.php';
+require '../src/ColumnTrait.php';
 require '../src/Migrate.php';
 require '../src/Migration.php';
 require '../src/Db.php';

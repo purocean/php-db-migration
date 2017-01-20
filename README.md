@@ -22,6 +22,7 @@ $migrationConfig = [
 ```bash
 php migration.php help
 ```
+迁移示例：/test/migrations/m170119_101310_test_migration.php
 
 ## 功能
 - [x] create   创建迁移
@@ -39,9 +40,9 @@ php test.php
 
 ## MySQL
 - [x] execute
-- [ ] createTable
+- [x] createTable
 - [ ] renameTable
-- [ ] dropTable
+- [x] dropTable
 - [ ] truncateTable
 - [ ] addColumn
 - [ ] dropColumn
@@ -57,32 +58,29 @@ php test.php
 - [ ] addCommentOnTable
 - [ ] dropCommentFromColumn
 - [ ] dropCommentFromTable
-- [ ] primaryKey
-- [ ] bigPrimaryKey
-- [ ] char
-- [ ] string
-- [ ] text
-- [ ] smallInteger
-- [ ] integer
-- [ ] bigInteger
-- [ ] float
-- [ ] double
-- [ ] decimal
-- [ ] dateTime
-- [ ] timestamp
-- [ ] time
-- [ ] date
-- [ ] binary
-- [ ] boolean
-- [ ] money
-- [ ] notNull
-- [ ] null
-- [ ] unique
-- [ ] check
-- [ ] defaultValue
-- [ ] comment
-- [ ] unsigned
-- [ ] after
-- [ ] first
-- [ ] defaultExpression
-- [ ] append
+- [x] primaryKey
+- [x] char
+- [x] varchar
+- [x] string
+- [x] text
+- [x] smallInteger
+- [x] integer
+- [x] bigInteger
+- [x] float
+- [x] double
+- [x] decimal
+- [x] dateTime
+- [x] timestamp
+- [x] time
+- [x] date
+- [x] binary
+- [x] boolean
+- [x] notNull
+- [x] null
+- [x] unique
+- [x] defaultValue
+- [x] comment
+- [x] unsigned
+- [x] after
+- [x] first
+- [x] append

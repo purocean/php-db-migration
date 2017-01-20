@@ -6,20 +6,20 @@ namespace DbMigration;
 */
 class Migration
 {
-    public $log = '';
+    use ColumnTrait;
+
     public $db = null;
+    public $tablePrefix = '';
 
     public function __construct($config)
     {
         foreach ($config as $key => $val) {
             $this->$key = $val;
         }
-
-        $this->log = "\n----------------";
     }
 
     /**
-     * 升级迁移配置
+     * 升级迁移
      * @return bool 是否能被升级，返回 false 表示此迁移不能被升级
      */
     public function up()
@@ -28,7 +28,7 @@ class Migration
     }
 
     /**
-     * 回滚迁移配置
+     * 回滚迁移
      * @return bool 是否能被回滚，返回 false 表示此迁移不能被回滚
      */
     public function down()
@@ -36,28 +36,26 @@ class Migration
         return true;
     }
 
-    /**
-     * 应用迁移
-     *
-     * @return bool 是否操作成功
-     */
-    public function do()
-    {
-
-    }
-
     public function execute($sql, $params = [])
     {
         echo "    > execute SQL: $sql ...";
         $time = microtime(true);
-        $this->db->exec(Migrate::getQuoted($sql), $params);
+        $this->db->exec(Db::getQuoted($sql, $this->tablePrefix), $params);
         echo ' done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
-    public function createTable($table, $columns, $options = null)
+    public function createTable($table, $columns, $options = '')
     {
+        $table = Db::getQuoted($table, $this->tablePrefix);
         echo "    > create table $table ...";
         $time = microtime(true);
+        $sql = "\nCREATE TABLE {$table} (";
+        foreach ($columns as $key => $column) {
+            $sql .= "\n    ".$column->buildCompleteString($key).',';
+        }
+        $sql = trim($sql, ',');
+        $sql .= "\n) ".$options;
+        $this->execute($sql);
         echo ' done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
@@ -68,10 +66,12 @@ class Migration
         echo ' done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
-    public function dropTable($table)
+    public function dropTable($table, $checkExists = false)
     {
+        $table = Db::getQuoted($table, $this->tablePrefix);
         echo "    > drop table $table ...";
         $time = microtime(true);
+        $this->execute("DROP TABLE ".($checkExists ? 'IF EXISTS' : ''). " {$table}");
         echo ' done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
