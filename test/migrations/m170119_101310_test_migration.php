@@ -62,6 +62,10 @@ class m170119_101310_test_migration extends Migration
         $this->dropIndex('test3', '{{%new_test}}');
         $this->dropIndex('test4', '{{%new_test}}');
 
+        $this->alterColumn('{{%new_test}}', 'id', $this->integer()->notNull()->defaultValue(0));
+        $this->dropPrimaryKey('{{%new_test}}');
+        $this->addPrimaryKey('{{%new_test}}', 'varchar, int');
+
         return true;
     }
 

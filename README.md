@@ -48,8 +48,8 @@ php test.php
 - [x] dropColumn
 - [x] renameColumn
 - [x] alterColumn
-- [ ] addPrimaryKey
-- [ ] dropPrimaryKey
+- [x] addPrimaryKey
+- [x] dropPrimaryKey
 - [ ] addForeignKey
 - [ ] dropForeignKey
 - [x] createIndex

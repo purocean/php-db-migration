@@ -157,17 +157,30 @@ class Migration
         echo '< done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
-    public function addPrimaryKey($name, $table, $columns)
+    public function addPrimaryKey($table, $columns)
     {
-        echo "\n> add primary key $name on $table (" . (is_array($columns) ? implode(',', $columns) : $columns) . ') ...';
+        $table = Db::getQuoted($table, $this->tablePrefix);
+
+        echo "\n> add primary key on $table (" . (is_array($columns) ? implode(',', $columns) : $columns) . ') ...';
         $time = microtime(true);
+        $columns = '('.implode(',', array_map(
+            function ($column) {
+                return Db::getQuoted('[['.trim($column).']]');
+            },
+            is_array($columns) ? $columns : explode(',', trim(trim(trim($columns), '('), ')'))
+        )).')';
+
+        $this->execute("ALTER TABLE {$table} ADD CONSTRAINT PRIMARY KEY {$columns}");
         echo '< done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
-    public function dropPrimaryKey($name, $table)
+    public function dropPrimaryKey($table)
     {
-        echo "\n> drop primary key $name ...\n";
+        $table = Db::getQuoted($table, $this->tablePrefix);
+
+        echo "\n> drop primary key on table {$table} ...\n";
         $time = microtime(true);
+        $this->execute("ALTER TABLE {$table} DROP PRIMARY KEY");
         echo '< done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
