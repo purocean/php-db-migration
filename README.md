@@ -35,6 +35,7 @@ php migration.php help
 ## 测试
 ```bash
 cd test
+vim config.php # 修改数据库配置
 php test.php
 ```
 
