@@ -6,6 +6,6 @@ return [
     'dbConfig' => [ // 数据库配置
         'username' => 'root',
         'password' => 'yang',
-        'dsn' => 'mysql:host=localhost;port=3306;dbname=db_migration_test;charset=utf8',
+        'dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=db_migration_test;charset=utf8',
     ]
 ];

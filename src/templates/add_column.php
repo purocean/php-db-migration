@@ -17,8 +17,6 @@ class <?= $className ?> extends Migration
             '__COLUMN_NAME__',
             $this->string()->after('id')->notNull()->defaultValue('')->comment('comment')
         );
-
-        return true;
     }
 
     /**
@@ -27,7 +25,5 @@ class <?= $className ?> extends Migration
     public function down()
     {
         $this->dropColumn('<?= $table ?>', '__COLUMN_NAME__');
-
-        return true;
     }
 }

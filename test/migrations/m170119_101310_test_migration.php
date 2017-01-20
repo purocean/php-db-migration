@@ -48,6 +48,10 @@ class m170119_101310_test_migration extends Migration
 
         $this->truncateTable('{{%new_test}}');
 
+        $this->renameColumn('{{%new_test}}', 'binary2', 'binary3');
+
+        $this->alterColumn('{{%new_test}}', 'binary3', $this->string(255));
+
         return true;
     }
 

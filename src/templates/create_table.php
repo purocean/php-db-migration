@@ -25,8 +25,6 @@ class <?= $className ?> extends Migration
             'created_at' => $this->integer()->notNull()->defaultValue(0),
             'updated_at' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
-
-        return true;
     }
 
     /**
@@ -35,7 +33,5 @@ class <?= $className ?> extends Migration
     public function down()
     {
         $this->dropTable('<?= $table ?>');
-
-        return true;
     }
 }

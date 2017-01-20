@@ -44,17 +44,17 @@ php test.php
 - [x] renameTable
 - [x] dropTable
 - [x] truncateTable
-- [ ] addColumn
-- [ ] dropColumn
-- [ ] renameColumn
-- [ ] alterColumn
+- [x] addColumn
+- [x] dropColumn
+- [x] renameColumn
+- [x] alterColumn
 - [ ] addPrimaryKey
 - [ ] dropPrimaryKey
 - [ ] addForeignKey
 - [ ] dropForeignKey
 - [ ] createIndex
 - [ ] dropIndex
-- [ ] addCommentOnColumn
+- [ ] addCommentOnColumn()
 - [ ] addCommentOnTable
 - [ ] dropCommentFromColumn
 - [ ] dropCommentFromTable

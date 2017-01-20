@@ -9,7 +9,7 @@ class <?= $className ?> extends Migration
      */
     public function up()
     {
-        return true;
+        // code ...
     }
 
     /**

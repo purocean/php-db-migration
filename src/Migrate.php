@@ -83,7 +83,7 @@ class Migrate
                     'db' => $this->_db,
                     'tablePrefix' => $this->tablePrefix,
                 ]);
-                if ($instance->up()) {
+                if ($instance->up() !== false) {
                     $this->_toUp($name);
                 } else {
                     return 'ERROR';
@@ -115,7 +115,7 @@ class Migrate
                     'db' => $this->_db,
                     'tablePrefix' => $this->tablePrefix,
                 ]);
-                if ($instance->down()) {
+                if ($instance->down() !== false) {
                     $this->_toDown($name);
                 } else {
                     return 'ERROR';

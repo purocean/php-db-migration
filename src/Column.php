@@ -85,7 +85,7 @@ class Column
     public function buildCompleteString($key)
     {
         $placeholderValues = [
-            '{key}' => Db::getQuoted("[[{$key}]]"),
+            '{key}' => $key,
             '{type}' => $this->_type,
             '{length}' => $this->_buildLengthString(),
             '{unsigned}' => $this->_buildUnsignedString(),
