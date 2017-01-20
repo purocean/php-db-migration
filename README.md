@@ -41,7 +41,7 @@ php test.php
 ## MySQL
 - [x] execute
 - [x] createTable
-- [ ] renameTable
+- [x] renameTable
 - [x] dropTable
 - [ ] truncateTable
 - [ ] addColumn

@@ -42,6 +42,8 @@ class m170119_101310_test_migration extends Migration
             'binary2'   => (new \DbMigration\Column('varbinary', 128))->comment('test'),
         ], $tableOptions);
 
+        $this->renameTable('{{%test}}', '{{%new_test}}');
+
         return true;
     }
 

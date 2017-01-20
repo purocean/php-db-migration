@@ -63,6 +63,11 @@ class Migration
     {
         echo "    > rename table $table to $newName ...";
         $time = microtime(true);
+        $this->execute(
+            "RENAME TABLE "
+            .Db::getQuoted($table, $this->tablePrefix)
+            ." TO ".Db::getQuoted($newName, $this->tablePrefix)
+        );
         echo ' done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
