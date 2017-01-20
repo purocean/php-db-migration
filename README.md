@@ -1,5 +1,5 @@
 # 数据库迁移工具，仿照Yii2
-    开发中……
+    仅支持 MySQL
 
 ## 使用
 ```php
@@ -52,8 +52,8 @@ php test.php
 - [ ] dropPrimaryKey
 - [ ] addForeignKey
 - [ ] dropForeignKey
-- [ ] createIndex
-- [ ] dropIndex
+- [x] createIndex
+- [x] dropIndex
 - [ ] addCommentOnColumn()
 - [ ] addCommentOnTable
 - [ ] dropCommentFromColumn

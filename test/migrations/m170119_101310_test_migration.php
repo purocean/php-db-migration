@@ -52,6 +52,16 @@ class m170119_101310_test_migration extends Migration
 
         $this->alterColumn('{{%new_test}}', 'binary3', $this->string(255));
 
+        $this->createIndex('test1', '{{%new_test}}', 'varchar');
+        $this->createIndex('test2', '{{%new_test}}', 'varchar,int', true);
+        $this->createIndex('test3', '{{%new_test}}', ['varchar ', 'int'], true);
+        $this->createIndex('test4', '{{%new_test}}', '(varchar, int)');
+
+        $this->dropIndex('test1', '{{%new_test}}');
+        $this->dropIndex('test2', '{{%new_test}}');
+        $this->dropIndex('test3', '{{%new_test}}');
+        $this->dropIndex('test4', '{{%new_test}}');
+
         return true;
     }
 

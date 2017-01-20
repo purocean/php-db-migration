@@ -187,15 +187,33 @@ class Migration
 
     public function createIndex($name, $table, $columns, $unique = false)
     {
-        echo '    > create' . ($unique ? ' unique' : '') . " index $name on $table (" . implode(',', (array) $columns) . ') ...';
+        $table = Db::getQuoted($table, $this->tablePrefix);
+        $name = Db::getQuoted("[[{$name}]]");
+
+        $columns = '('.implode(',', array_map(
+            function ($column) {
+                return Db::getQuoted('[['.trim($column).']]');
+            },
+            is_array($columns) ? $columns : explode(',', trim(trim(trim($columns), '('), ')'))
+        )).')';
+
+        echo '    > create' . ($unique ? ' unique' : '') . " index $name on $table $columns ...";
         $time = microtime(true);
+        $this->execute(
+            ($unique ? 'CREATE UNIQUE INDEX ' : 'CREATE INDEX ')
+            ."{$name} ON {$table} {$columns}"
+        );
         echo '< done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
     public function dropIndex($name, $table)
     {
+        $table = Db::getQuoted($table, $this->tablePrefix);
+        $name = Db::getQuoted("[[{$name}]]");
+
         echo "\n> drop index $name on $table ...\n";
         $time = microtime(true);
+        $this->execute("DROP INDEX {$name} ON {$table}");
         echo '< done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
     }
 
