@@ -96,7 +96,34 @@ class Migrate
 
     public function down($limit = 1)
     {
-        return 'Not implement';
+        $migrations = array_slice(array_reverse($this->_getHistory()), 0, $limit);
+        if (!$this->_confirm(
+            "Total ".count($migrations)." history migration to be applied:\n    "
+            .implode("\n    ", array_map(function ($row) {
+                return '['.date('Y-m-d H:i:s', $row['apply_time']).'] '.$row['name'];
+            }, $migrations))
+            ."\nDown the above migration?"
+        )) {
+            return "No effect";
+        }
+
+        foreach (array_column($migrations, 'name') as $name) {
+            try {
+                require $this->migrationsPath.'/'.$name.'.php';
+                $className = '\\'.$name;
+                $instance = new $className([
+                    'db' => $this->_db,
+                    'tablePrefix' => $this->tablePrefix,
+                ]);
+                if ($instance->down()) {
+                    $this->_toDown($name);
+                } else {
+                    return 'ERROR';
+                }
+            } catch (\Exception $e) {
+                throw $e;
+            }
+        }
     }
 
     public function mark($name, $applied = true)
@@ -193,7 +220,10 @@ class Migrate
     private function _getHistory()
     {
         $migrationTable = $this->getTableName($this->migrationTable);
-        return $this->_db->fetchAll("SELECT * FROM {$migrationTable} WHERE 1 ORDER BY `apply_time` ASC");
+        return $this->_db->fetchAll(
+            "SELECT * FROM {$migrationTable} WHERE `name` <> ? ORDER BY `apply_time` ASC",
+            [self::BASE_MIGRATION]
+        );
     }
 
     private function _getNew()
